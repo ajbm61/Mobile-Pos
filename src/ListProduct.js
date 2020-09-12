@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { TouchableOpacity, Image, View, Text, TextInput, ToastAndroid, ScrollView, StyleSheet } from 'react-native';
 import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter } from 'react-native-bluetooth-escpos-printer';
 import foodList from './assets/produk/food'
@@ -15,28 +15,28 @@ export default function ListProduct() {
 
     useEffect(() => {
         setListProduct(foodList)
-        BluetoothManager.enableBluetooth().then((r) => {
-            var paired = [];
-            if (r && r.length > 0) {
-                for (var i = 0; i < r.length; i++) {
-                    try {
-                        paired.push(JSON.parse(r[i])); // NEED TO PARSE THE DEVICE INFORMATION
-                    } catch (e) {
-                        //ignore
-                    }
-                }
-            }
-            console.log(JSON.stringify(paired))
-        }, (err) => {
-            console.log(err)
-        });
+        // BluetoothManager.enableBluetooth().then((r) => {
+        //     var paired = [];
+        //     if (r && r.length > 0) {
+        //         for (var i = 0; i < r.length; i++) {
+        //             try {
+        //                 paired.push(JSON.parse(r[i])); // NEED TO PARSE THE DEVICE INFORMATION
+        //             } catch (e) {
+        //                 //ignore
+        //             }
+        //         }
+        //     }
+        //     console.log(JSON.stringify(paired))
+        // }, (err) => {
+        //     console.log(err)
+        // });
 
-        BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
-            .then((s) => {
-                console.log(s)
-            }, (e) => {
-                console.log(e)
-            })        
+        // BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
+        //     .then((s) => {
+        //         console.log(s)
+        //     }, (e) => {
+        //         console.log(e)
+        //     })        
     }, []);
 
     const cetakPrint = async () => {
@@ -47,17 +47,17 @@ export default function ListProduct() {
         console.log(listProduct)
     }
 
-    const btnAdd = async (keyId, status) => {
-        if(activeId.includes(keyId)) {
-            console.log('ada data')
-            await removeActiveId(activeId, keyId)
-            await setactiveId(activeId)
+    const btnAdd = (keyId, btnStatus) => {
+        if (btnStatus) {
+            removeActiveId(activeId, keyId)
         } else {
-            await setShowJml(status)
-            await setactiveId([...activeId, keyId])
-            console.log('tidak ada data')
+            setactiveId(activeId.concat(keyId))
         }
         console.log(activeId)
+    }
+        
+    const btnRemove = (keyId) => {
+        removeActiveId(activeId, keyId)
     }
 
     return (
@@ -72,8 +72,9 @@ export default function ListProduct() {
                 {/* Loop Produk */}
                 {
                     listProduct.map((item, index) => {
+                        let btnStatus = activeId.includes(index + 1)
                         return (
-                            <View key={index}>
+                            <View key={`key-${index + 1}`}>
                                 <View style={{ flexDirection: "row", marginTop: 10 }}>
                                     <View style={{ marginRight: 20 }}>
                                         <Image
@@ -83,7 +84,7 @@ export default function ListProduct() {
                                             }} />
                                     </View>
                                     <View>
-                                        <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{item.nama}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{index + 1} - {item.nama}</Text>
                                         <Text style={{ fontWeight: "bold", fontSize: 15, color: '#000' }}>Rp. {formatMoney(item.harga)}</Text>
                                     </View>
                                 </View>
@@ -94,7 +95,7 @@ export default function ListProduct() {
                                         </View>
                                     </View>                                     
                                     {
-                                        (showJml == true && activeId.includes(index)) &&
+                                        (activeId.includes(index + 1)) &&
                                         <View style={{ flexDirection: 'row', marginRight: 10 }}>
                                             <TouchableOpacity
                                                 onPress={() => console.log('kurang')}
@@ -111,9 +112,9 @@ export default function ListProduct() {
                                             </TouchableOpacity>
                                         </View>
                                     }
-                                    <TouchableOpacity onPress={() => btnAdd(index, true)} style={[showJml == true && activeId.includes(index) ? styles.btnRemove : styles.btnAdd]}>
-                                        <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{showJml == true && activeId.includes(index) ? 'Remove' : 'Add'}</Text>
-                                        </TouchableOpacity>                               
+                                    <TouchableOpacity onPress={() => btnAdd(index + 1, btnStatus)} style={[activeId.includes(index + 1) ? styles.btnRemove : styles.btnAdd]}>
+                                        <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{activeId.includes(index + 1) ? 'Remove' : 'Add'}</Text>
+                                    </TouchableOpacity>                               
                                 </View>
                             </View>
                         )
