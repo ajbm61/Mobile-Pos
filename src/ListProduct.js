@@ -39,6 +39,9 @@ export default function ListProduct() {
         //     })        
     }, []);
 
+    useEffect(() => {       
+    }, []);    
+
     const cetakPrint = async () => {
         await BluetoothEscposPrinter.printText("Testing Printer coooyyy\n\r", {});        
     }
@@ -50,6 +53,7 @@ export default function ListProduct() {
     const btnAdd = (keyId, btnStatus) => {
         if (btnStatus) {
             removeActiveId(activeId, keyId)
+            setactiveId(activeId.concat(""))
         } else {
             setactiveId(activeId.concat(keyId))
         }
@@ -58,6 +62,10 @@ export default function ListProduct() {
         
     const btnRemove = (keyId) => {
         removeActiveId(activeId, keyId)
+    }
+
+    const btnTes = (e) => {
+        console.log(e)
     }
 
     return (
