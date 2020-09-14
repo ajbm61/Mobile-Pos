@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import configureStore from './src/redux/configureStore'
 const { store } = configureStore();
 import ListProduct from './src/ListProduct'
+import Home from './src/Home'
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,7 @@ function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={ListProduct} />
+          <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

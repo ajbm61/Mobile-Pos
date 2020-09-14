@@ -19,10 +19,10 @@ export default function (state = initialState, action) {
                 addedItem.quantity += 1
                 return {
                     ...state,
-                    total: state.total + parseInt(addedItem.harga.replace(".", ""))
+                    total: state.total + parseInt(addedItem.harga)
                 }
             } else {
-                let newTotal = state.total + parseInt(content.harga.replace(".", ""));
+                let newTotal = state.total + parseInt(content.harga);
                 content.quantity = 1;
                 return {
                     ...state,
@@ -37,7 +37,7 @@ export default function (state = initialState, action) {
             console.log(content)
             let addedItem = state.cartItem.find(item => item.id_produk === action.id)
             addedItem.quantity += 1
-            let newTotal = state.total + parseInt(content.harga.replace(".", ""));
+            let newTotal = state.total + parseInt(content.harga);
             return {
                 ...state,
                 total: newTotal
@@ -58,7 +58,7 @@ export default function (state = initialState, action) {
             //if the qt == 0 then it should be removed
             if (addedItem.quantity === 1) {
                 let new_items = state.cartItem.filter(item => item.id_produk !== action.id)
-                let newTotal = state.total - parseInt(content.harga.replace(".", ""));
+                let newTotal = state.total - parseInt(content.harga);
                 return {
                     ...state,
                     cartItem: new_items,
@@ -67,7 +67,7 @@ export default function (state = initialState, action) {
             }
             else {
                 addedItem.quantity -= 1
-                let newTotal = state.total - parseInt(content.harga.replace(".", ""));
+                let newTotal = state.total - parseInt(content.harga);
                 return {
                     ...state,
                     total: newTotal

@@ -2,16 +2,24 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { TouchableOpacity, Image, View, Text, TextInput, ToastAndroid, ScrollView, StyleSheet } from 'react-native';
 import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter } from 'react-native-bluetooth-escpos-printer';
 import foodList from './assets/produk/food'
+import { addQuantity, subtractQuantity, emptyCart } from './redux/cartActions';
+import { addActiveProduct } from './redux/userActions';
 import { formatMoney } from './lib/currency'
+import { addToCart } from './redux/cartActions'
+import { useDispatch, useSelector } from 'react-redux';
 import { removeActiveId } from './lib/helper'
 
 export default function ListProduct() {
 
+    const dispatch = useDispatch()
+    const globalState = useSelector(state => state);  
     const [listProduct, setListProduct] = useState([])
     const [listOrder, setListOrder] = useState([])
     const [showJml, setShowJml] = useState(false)
     const [activeId, setactiveId] = useState([])
     const [arrayId, setArrayId] = useState([])
+    const [cart, setCart] = useState([])
+    const cartState = globalState.cart.cartItem; 
 
     useEffect(() => {
         setListProduct(foodList)
@@ -37,10 +45,7 @@ export default function ListProduct() {
         //     }, (e) => {
         //         console.log(e)
         //     })        
-    }, []);
-
-    useEffect(() => {       
-    }, []);    
+    }, []);  
 
     const cetakPrint = async () => {
         await BluetoothEscposPrinter.printText("Testing Printer coooyyy\n\r", {});        
@@ -50,14 +55,25 @@ export default function ListProduct() {
         console.log(listProduct)
     }
 
-    const btnAdd = (keyId, btnStatus) => {
+    const btnAdd = (keyId, btnStatus, item) => {
+        dispatch(addActiveProduct(item.id_produk))
         if (btnStatus) {
             removeActiveId(activeId, keyId)
             setactiveId(activeId.concat(""))
+            cart.splice(keyId, 1);
         } else {
+            addCart(item, item.id_produk)
             setactiveId(activeId.concat(keyId))
+            setCart(cart.concat(foodList[keyId]))
         }
-        console.log(activeId)
+    }
+
+    const addCart = (item, id) => {
+        dispatch(addToCart(item, id))
+    }    
+
+    const checkOutPage = () => {
+        console.log(cart)
     }
         
     const btnRemove = (keyId) => {
@@ -80,9 +96,9 @@ export default function ListProduct() {
                 {/* Loop Produk */}
                 {
                     listProduct.map((item, index) => {
-                        let btnStatus = activeId.includes(index + 1)
+                        let btnStatus = activeId.includes(index)
                         return (
-                            <View key={`key-${index + 1}`}>
+                            <View key={`key-${index}`}>
                                 <View style={{ flexDirection: "row", marginTop: 10 }}>
                                     <View style={{ marginRight: 20 }}>
                                         <Image
@@ -92,7 +108,7 @@ export default function ListProduct() {
                                             }} />
                                     </View>
                                     <View>
-                                        <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{index + 1} - {item.nama}</Text>
+                                        <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{index} - {item.nama}</Text>
                                         <Text style={{ fontWeight: "bold", fontSize: 15, color: '#000' }}>Rp. {formatMoney(item.harga)}</Text>
                                     </View>
                                 </View>
@@ -103,25 +119,25 @@ export default function ListProduct() {
                                         </View>
                                     </View>                                     
                                     {
-                                        (activeId.includes(index + 1)) &&
+                                        (activeId.includes(index)) &&
                                         <View style={{ flexDirection: 'row', marginRight: 10 }}>
                                             <TouchableOpacity
-                                                onPress={() => console.log('kurang')}
+                                                onPress={() => dispatch(subtractQuantity(item, item.id_produk))}
                                                 style={{ paddingHorizontal: 10, borderRadius: 5, backgroundColor: '#43AB4A' }}>
                                                 <Text style={{ fontSize: 16, color: 'white' }}>-</Text>
                                             </TouchableOpacity>
                                             <View style={{ padding: 1, marginHorizontal: 10 }}>
-                                                <Text style={{ fontSize: 16, color: '#515151' }}>6</Text>
+                                                <Text style={{ fontSize: 16, color: '#515151' }}>9</Text>
                                             </View>
                                             <TouchableOpacity
-                                                onPress={() => console.log('tambah')}
+                                                onPress={() => dispatch(addQuantity(item, item.id_produk))}
                                                 style={{ paddingHorizontal: 10, borderRadius: 5, backgroundColor: '#43AB4A' }}>
                                                 <Text style={{ fontSize: 16, color: 'white' }}>+</Text>
                                             </TouchableOpacity>
                                         </View>
                                     }
-                                    <TouchableOpacity onPress={() => btnAdd(index + 1, btnStatus)} style={[activeId.includes(index + 1) ? styles.btnRemove : styles.btnAdd]}>
-                                        <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{activeId.includes(index + 1) ? 'Remove' : 'Add'}</Text>
+                                    <TouchableOpacity onPress={() => btnAdd(index, btnStatus, item)} style={[activeId.includes(index) ? styles.btnRemove : styles.btnAdd]}>
+                                        <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{activeId.includes(index) ? 'Remove' : 'Add'}</Text>
                                     </TouchableOpacity>                               
                                 </View>
                             </View>
@@ -135,7 +151,7 @@ export default function ListProduct() {
         </ScrollView>
         <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>
             <TouchableOpacity
-                onPress={() => console.log('ke halaman checkout')} 
+                onPress={() => checkOutPage()} 
                 style={{ backgroundColor: '#43AB4A', marginHorizontal: 20, paddingVertical: 10, borderRadius: 5, flexDirection: 'row', justifyContent: 'center' }}>
                     <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 10, fontSize: 16 }}>Checkout</Text>
             </TouchableOpacity>
