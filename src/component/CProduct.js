@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet, ToastAndroid } from 'react-native';
 import { formatMoney } from '../lib/currency'
 import { addQuantity, subtractQuantity, emptyCart } from '../redux/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,9 +17,14 @@ export default function CProduct({dataProduk, dataCart}) {
     }, [])
 
     const btnAdd = (item) => {
-        dispatch(addToCart(item, item.id))
-        setShowJml(true)
+        console.log(item)
+        dispatch(addToCart(item, item.id_produk))
+        showToast()
     }
+
+    const showToast = () => {
+        ToastAndroid.show("Produk berhasil ditambahkan !", ToastAndroid.SHORT);
+    };    
 
     return (
         <View>
@@ -28,7 +33,7 @@ export default function CProduct({dataProduk, dataCart}) {
                     <Image
                         style={{ width: 75, height: 75, borderRadius: 11 }}
                         source={{
-                            uri: 'https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/Crispy-Fried-Chicken_EXPS_FRBZ19_6445_C01_31_3b.jpg'
+                            uri: dataProduk.img
                         }} />
                 </View>
                 <View>
@@ -42,8 +47,8 @@ export default function CProduct({dataProduk, dataCart}) {
                         <Text style={{ fontWeight: 'bold', color: '#515151' }}>{dataProduk.nama_produk}</Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => btnAdd(dataProduk)} style={[showJml == true ? styles.btnRemove : styles.btnAdd]}>
-                    <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{showJml == true ? 'Remove' : 'Add'}</Text>
+                <TouchableOpacity onPress={() => btnAdd(dataProduk)}>
+                    <Text style={styles.btnAdd}>Add</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -56,7 +61,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#43AB4A',
         width: 100,
         borderRadius: 5,
-        paddingVertical: 5
+        paddingVertical: 5,
+        textAlign: 'center', 
+        color: 'white', 
+        fontWeight: 'bold'
     },
     btnRemove: {
         backgroundColor: '#F48024',

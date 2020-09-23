@@ -1,7 +1,7 @@
 // In App.js in a new project
 
 import * as React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
@@ -20,8 +20,11 @@ export default function App() {
     return (
       <Provider store={store}>
         <NavigationContainer>
-          <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>Mobile POS</Text>
+          <View style={{paddingHorizontal: 10, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>RAMEN BEWOK</Text>
+            <TouchableOpacity>
+              <Ionicons name="menu-outline" size={30} color="#000" />
+            </TouchableOpacity>
           </View>   
           <Tab.Navigator tabBarOptions={{
             style: {

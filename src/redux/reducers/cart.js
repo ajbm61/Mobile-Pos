@@ -30,7 +30,7 @@ export default function (state = initialState, action) {
                     total: newTotal
                 }
             }
-        }
+        }  
 
         case ADD_QUANTITY: {
             const { content } = action.payload

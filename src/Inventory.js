@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { TouchableOpacity, View, Text, ScrollView, RefreshControl } from 'react-native';
+import { TouchableOpacity, View, Text, ScrollView, RefreshControl, ToastAndroid } from 'react-native';
 import { BluetoothEscposPrinter } from 'react-native-bluetooth-escpos-printer';
 import foodList from './assets/produk/food'
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,13 +30,17 @@ export default function ListProduct() {
         console.log(cart)
     }
 
+    const showToast = () => {
+        ToastAndroid.show("Data berhasil di refresh !", ToastAndroid.SHORT);
+    };    
+
     const onRefresh = useCallback(
         () => {
             setRefreshing(true);
             dispatch(emptyCart())
             console.log('halaman di refresh')
-            setCartState(globalState.cart)
-            wait(2000).then(() => setRefreshing(false));
+            wait(500).then(() => setRefreshing(false));
+            showToast()
         },
         [],
     )
