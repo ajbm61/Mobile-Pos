@@ -17,14 +17,14 @@ export default function ListProduct() {
     const [cart] = useState([])
 
     useEffect(() => {
-        setListProduct(foodList)        
+        setListProduct(foodList)
     }, []);
 
     const wait = (timeout) => {
         return new Promise(resolve => {
             setTimeout(resolve, timeout);
         });
-    }    
+    }
 
     const checkOutPage = () => {
         console.log(cart)
@@ -47,9 +47,6 @@ export default function ListProduct() {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
-                    <View style={{ paddingHorizontal: 20, paddingVertical: 15, borderBottomColor: '#E0E6E6', borderBottomWidth: 1, borderStyle: "dotted" }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18 }}>List Menu</Text>
-                    </View>
                     <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
 
                         {/* Loop Produk */}
@@ -65,13 +62,6 @@ export default function ListProduct() {
                     </View>
                 </View>
             </ScrollView>
-            <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>
-                <TouchableOpacity
-                    onPress={() => checkOutPage()}
-                    style={{ backgroundColor: '#43AB4A', marginHorizontal: 20, paddingVertical: 10, borderRadius: 5, flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 10, fontSize: 16 }}>Checkout</Text>
-                </TouchableOpacity>
-            </View>
         </>
     )
 

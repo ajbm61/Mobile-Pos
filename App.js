@@ -7,21 +7,32 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import configureStore from './src/redux/configureStore'
 const { store } = configureStore();
-import ListProduct from './src/ListProduct'
-import Home from './src/Home'
+import Inventory from './src/Inventory'
+import Sale from './src/Sale'
+import Report from './src/Report'
 
-const Stack = createStackNavigator();
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function App() {
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={Home} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
-  );
+const Tab = createMaterialTopTabNavigator();
+
+export default function App() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <View style={{paddingHorizontal: 10, paddingVertical: 10}}>
+            <Text style={{fontWeight: 'bold', fontSize: 18}}>Mobile POS</Text>
+          </View>   
+          <Tab.Navigator tabBarOptions={{
+            style: {
+              elevation: 0
+            },            
+          }}>
+              <Tab.Screen name="Inventory" component={Inventory} />
+              <Tab.Screen name="Sale" component={Sale} />
+              <Tab.Screen name="Report" component={Report} />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </Provider>        
+    );
 }
-
-export default App;

@@ -42,24 +42,6 @@ export default function CProduct({dataProduk, dataCart}) {
                         <Text style={{ fontWeight: 'bold', color: '#515151' }}>{dataProduk.nama_produk}</Text>
                     </View>
                 </View>
-                {
-                    (showJml == true) &&
-                        <View style={{ flexDirection: 'row', marginRight: 10 }}>
-                            <TouchableOpacity
-                                onPress={() => dispatch(subtractQuantity(dataProduk, dataProduk.id_produk))}
-                                style={{ paddingHorizontal: 10, borderRadius: 5, backgroundColor: '#43AB4A' }}>
-                                <Text style={{ fontSize: 16, color: 'white' }}>-</Text>
-                            </TouchableOpacity>
-                            <View style={{ padding: 1, marginHorizontal: 10 }}>
-                                <Text style={{ fontSize: 16, color: '#515151' }}>9</Text>
-                            </View>
-                            <TouchableOpacity
-                                onPress={() => dispatch(addQuantity(dataProduk, dataProduk.id_produk))}
-                                style={{ paddingHorizontal: 10, borderRadius: 5, backgroundColor: '#43AB4A' }}>
-                                <Text style={{ fontSize: 16, color: 'white' }}>+</Text>
-                            </TouchableOpacity>
-                        </View>
-                }
                 <TouchableOpacity onPress={() => btnAdd(dataProduk)} style={[showJml == true ? styles.btnRemove : styles.btnAdd]}>
                     <Text style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>{showJml == true ? 'Remove' : 'Add'}</Text>
                 </TouchableOpacity>
