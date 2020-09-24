@@ -54,18 +54,18 @@ export default function ListProduct() {
 
     const insertDB = (namaProduk, qty, price) => {
         db.transaction((txn) => {
-            txn.executeSql("SELECT NAME FROM product_sold WHERE ID=1", 
+            txn.executeSql("SELECT name FROM sqlite_master WHERE type='table' AND name='product_sold'", 
             [],
             (tx, res) => {
                 if(res.rows.length == 0) {
                     txn.executeSql('DROP TABLE IF EXISTS product_sold', [])
-                    txn.executeSql('CREATE TABLE IF NOT EXISTS product_sold (ID INTEGER PRIMARY KEY NOT NULL, NAME VARCHAR(32), QTY VARCHAR(4), PRICE VARCHAR(12), TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP)', [])
-                    txn.executeSql('INSERT INTO product_sold (NAME, QTY, PRICE) VALUES (?, ?, ?)',
-                        [namaProduk, qty, price],
-                        (tx, results) => {
-                            console.log("Results", results.rowsAffected)
-                        })                
+                    txn.executeSql('CREATE TABLE IF NOT EXISTS product_sold (ID INTEGER PRIMARY KEY NOT NULL, NAME VARCHAR(32), QTY VARCHAR(4), PRICE VARCHAR(12), TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP)', [])             
                 }
+                txn.executeSql('INSERT INTO product_sold (NAME, QTY, PRICE) VALUES (?, ?, ?)',
+                    [namaProduk, qty, price],
+                    (tx, results) => {
+                        console.log("Results", results.rowsAffected)
+                    })
             })
         })
     }  
@@ -93,7 +93,12 @@ export default function ListProduct() {
                 await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
             }, (e) => {
                 console.log(e)
-            })            
+            })
+            
+        await dispatch(emptyCart())
+        await checkOutPage()
+        await setDataCart(cart)
+        await setTotal(globalState.cart.total)        
     }    
 
     const onRefresh = useCallback(
@@ -159,13 +164,13 @@ export default function ListProduct() {
                     onPress={() => checkOutPage()}
                     style={{ backgroundColor: '#E74145', width: '45%', marginHorizontal: 10, paddingVertical: 10, borderRadius: 5, flexDirection: 'row', justifyContent: 'center' }}>
                     <Ionicons name="search-circle-outline" size={20} color="#FFF" style={{}} />
-                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Cek Nota</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Check</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => cetakPrint()}
                     style={{ backgroundColor: '#43AB4A', width: '45%', marginHorizontal: 10, paddingVertical: 10, borderRadius: 5, flexDirection: 'row', justifyContent: 'center' }}>
                     <Ionicons name="print-outline" size={20} color="#FFF" style={{ }} />
-                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Cetak Struk</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Print</Text>
                 </TouchableOpacity>
             </View>                
         </>
