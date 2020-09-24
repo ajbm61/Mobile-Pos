@@ -44,11 +44,11 @@ export default function CProduct({dataProduk, dataCart}) {
                         <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{dataProduk.nama}</Text>
                         <Text style={{ fontWeight: "bold", fontSize: 15, color: '#000' }}>Rp. {formatMoney(dataProduk.harga)}</Text>               
                     </View>
-                    <View style={{ width: 100, backgroundColor: '#43AB4A', flexDirection: 'row', justifyContent: 'center', borderTopRightRadius: 5, borderBottomRightRadius: 5 }}>
-                        <TouchableOpacity style={{justifyContent: 'center'}} onPress={() => btnAdd(dataProduk)}>
+                    <TouchableOpacity onPress={() => btnAdd(dataProduk)} style={{ width: 100, backgroundColor: '#43AB4A', flexDirection: 'row', justifyContent: 'center', borderTopRightRadius: 5, borderBottomRightRadius: 5 }}>
+                        <View style={{justifyContent: 'center'}}>
                             <Ionicons name="add-outline" size={30} color="#FFF" style={styles.btnAdd} />
-                        </TouchableOpacity>                             
-                    </View>
+                        </View>                             
+                    </TouchableOpacity>
                 </View>                
             </View>
 

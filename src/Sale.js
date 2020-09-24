@@ -21,14 +21,7 @@ export default function ListProduct() {
     const [total, setTotal] = useState([])
     const cart = globalState.cart.cartItem;
 
-/*     useEffect(() => {
-        navigation.addListener('focus', () => {
-            console.log('triggered')
-            console.log(dataCart)
-            checkOutPage()
-        });
-        
-    }, [navigation]); */
+    var db = openDatabase({ name: 'UserDatabase.db' });
 
     const wait = (timeout) => {
         return new Promise(resolve => {
@@ -59,26 +52,30 @@ export default function ListProduct() {
         return date + '/' + month + '/' + year;//format: dd-mm-yyyy;
     }
 
-    const insertDB = () => {
-
-    }
+    const insertDB = (namaProduk, qty, price) => {
+        db.transaction((txn) => {
+            txn.executeSql("SELECT NAME FROM product_sold WHERE ID=1", 
+            [],
+            (tx, res) => {
+                if(res.rows.length == 0) {
+                    txn.executeSql('DROP TABLE IF EXISTS product_sold', [])
+                    txn.executeSql('CREATE TABLE IF NOT EXISTS product_sold (ID INTEGER PRIMARY KEY NOT NULL, NAME VARCHAR(32), QTY VARCHAR(4), PRICE VARCHAR(12), TIMESTAMP DATETIME DEFAULT CURRENT_TIMESTAMP)', [])
+                    txn.executeSql('INSERT INTO product_sold (NAME, QTY, PRICE) VALUES (?, ?, ?)',
+                        [namaProduk, qty, price],
+                        (tx, results) => {
+                            console.log("Results", results.rowsAffected)
+                        })                
+                }
+            })
+        })
+    }  
     
     const cetakPrint = async () => {
-        await BluetoothManager.enableBluetooth().then((r) => {
-            var paired = [];
-            if (r && r.length > 0) {
-                for (var i = 0; i < r.length; i++) {
-                    try {
-                        paired.push(JSON.parse(r[i])); // NEED TO PARSE THE DEVICE INFORMATION
-                    } catch (e) {
-                        //ignore
-                    }
-                }
-            }
-            console.log(JSON.stringify(paired))
-        }, (err) => {
-            console.log(err)
-        });
+
+        dataCart.map((item, index) => {
+            insertDB(item.nama, item.quantity, item.harga)
+        })
+
         await BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
             .then( async (s) => {
                 await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);

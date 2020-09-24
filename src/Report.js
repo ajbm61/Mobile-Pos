@@ -46,7 +46,12 @@ export default function ListProduct() {
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
                 <View style={{ backgroundColor: 'white', flex: 1 }}>
-                    <Text>Halaman Report</Text>
+                    <View>
+                        <View></View>
+                        <View></View>
+                    </View>
+                    <View></View>
+                    <View></View>
                 </View>
             </ScrollView>
         </>
