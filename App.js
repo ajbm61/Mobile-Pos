@@ -3,38 +3,77 @@
 import * as React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { Provider } from 'react-redux';
 import configureStore from './src/redux/configureStore'
-const { store } = configureStore();
 import Inventory from './src/Inventory'
 import Sale from './src/Sale'
 import Report from './src/Report'
+import MenuTop from './src/component/MenuTop'
+import SearchBluetooth from './src/SearchBluetooth'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const { store } = configureStore();
 
 const Tab = createMaterialTopTabNavigator();
+const Stack = createStackNavigator();
 
-export default function App() {
+function LogoTitle() {
+  return (
+    <View>
+      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>RAMEN BEWOK</Text>
+    </View>
+  )
+}
+
+function Kasir() {
+  return (
+    <>
+      <Tab.Navigator tabBarOptions={{
+        style: {
+          elevation: 0,
+          backgroundColor: '#81D4FA'
+        },
+      }}>
+        <Tab.Screen name="Inventory" component={Inventory} />
+        <Tab.Screen name="Sale" component={Sale} />
+        <Tab.Screen name="Report" component={Report} />
+      </Tab.Navigator>
+    </>    
+  )
+}
+
+export default function App(props) {
+
     return (
-      <Provider store={store}>
+      <Provider store={store}>        
         <NavigationContainer>
-          <View style={{paddingHorizontal: 10, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{fontWeight: 'bold', fontSize: 18}}>RAMEN BEWOK</Text>
-            <TouchableOpacity>
-              <Ionicons name="menu-outline" size={30} color="#000" />
-            </TouchableOpacity>
-          </View>   
-          <Tab.Navigator tabBarOptions={{
-            style: {
-              elevation: 0
-            },            
-          }}>
-              <Tab.Screen name="Inventory" component={Inventory} />
-              <Tab.Screen name="Sale" component={Sale} />
-              <Tab.Screen name="Report" component={Report} />
-          </Tab.Navigator>
+            {/* <MenuTop /> */}
+          <Stack.Navigator
+            // headerMode="none"
+            screenOptions={{
+              gestureEnabled: true,
+              gestureDirection: "horizontal",
+              cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+            }}            
+          >
+            <Stack.Screen 
+              name="Home" 
+              options={{
+                headerTitle: () => <LogoTitle />,
+                headerRight: () => {
+                  return <MenuTop />
+                }
+              }}
+              component={Kasir} />
+            <Stack.Screen 
+              options={{
+                title: 'Search Bluetooth'
+              }}
+              name="SearchBluetooth" 
+              component={SearchBluetooth} />
+          </Stack.Navigator>          
         </NavigationContainer>
       </Provider>        
     );

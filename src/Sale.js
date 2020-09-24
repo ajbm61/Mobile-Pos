@@ -7,6 +7,7 @@ import { useNavigation, useFocusEffect, useIsFocused } from '@react-navigation/n
 import { emptyCart } from './redux/cartActions';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { openDatabase } from 'react-native-sqlite-storage';
 
 export default function ListProduct() {
 
@@ -20,15 +21,14 @@ export default function ListProduct() {
     const [total, setTotal] = useState([])
     const cart = globalState.cart.cartItem;
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            checkOutPage()
+/*     useEffect(() => {
+        navigation.addListener('focus', () => {
             console.log('triggered')
+            console.log(dataCart)
+            checkOutPage()
         });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return unsubscribe;
-    }, [navigation]);
+        
+    }, [navigation]); */
 
     const wait = (timeout) => {
         return new Promise(resolve => {
@@ -57,7 +57,11 @@ export default function ListProduct() {
         var year = new Date().getFullYear();
 
         return date + '/' + month + '/' + year;//format: dd-mm-yyyy;
-    }    
+    }
+
+    const insertDB = () => {
+
+    }
     
     const cetakPrint = async () => {
         await BluetoothManager.enableBluetooth().then((r) => {

@@ -65,7 +65,7 @@ export default function ListProduct() {
 
                     </View>
                 </View>
-            </ScrollView>
+            </ScrollView>             
         </>
     )
 
