@@ -33,7 +33,7 @@ function Kasir() {
       <Tab.Navigator tabBarOptions={{
         style: {
           elevation: 0,
-          backgroundColor: '#81D4FA'
+          backgroundColor: '#F6E7D2'
         },
       }}>
         <Tab.Screen name="Inventory" component={Inventory} />
