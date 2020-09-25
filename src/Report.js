@@ -3,6 +3,7 @@ import { View, ScrollView, TouchableOpacity, Text, Button } from 'react-native';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { Col, Row, Grid } from "react-native-easy-grid";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { readQuery } from './model/DBQuery'
 
 export default function Report() {
 
@@ -13,7 +14,7 @@ export default function Report() {
     const [date, setDate] = useState(new Date(1598051730000));
 
     useEffect(() => {
-        fetchReport()
+
     }, []);    
 
     const onChange = (event, selectedDate) => {
@@ -27,17 +28,8 @@ export default function Report() {
     };
 
     const fetchReport = () => {
-        db.transaction((tx) => {
-            tx.executeSql('SELECT * FROM product_sold',
-            [],
-            (tx, results) => {
-                var temp = []
-                for(let i=0; i<results.rows.length; ++i) {
-                    temp.push(results.rows.item(i))
-                }
-                setDataReport(temp)
-            })
-        })
+        readQuery("SELECT * FROM product_sold")
+            .then(res => setDataReport(res.result))
     }
 
 
@@ -87,21 +79,23 @@ export default function Report() {
                     <View style={{height: 340}}>
                         <ScrollView>
                             {
-                                dataReport.map((item, index) => {
-                                    return (
-                                        <Grid key={`list-${index}`}>
-                                            <Col style={{ backgroundColor: '#E7E7E7', paddingVertical: 10, paddingLeft: 10 }}>
-                                                <Text style={{ textAlign: 'left', color: '#000' }}>{item.NAME}</Text>
-                                            </Col>
-                                            <Col style={{ backgroundColor: '#D6D6D6', paddingVertical: 10 }}>
-                                                <Text style={{ textAlign: 'center', color: '#000' }}>{item.QTY}</Text>
-                                            </Col>
-                                            <Col style={{ backgroundColor: '#B5B5B5', paddingVertical: 10 }}>
-                                                <Text style={{ textAlign: 'center', color: '#000' }}>{item.PRICE}</Text>
-                                            </Col>
-                                        </Grid>
-                                    )
-                                })
+                                (dataReport.length > 0) &&
+                                    dataReport.map((item, index) => {
+                                        console.log(item.NAME)
+                                        return (
+                                            <Grid key={`list-${index}`}>
+                                                <Col style={{ backgroundColor: '#E7E7E7', paddingVertical: 10, paddingLeft: 10 }}>
+                                                    <Text style={{ textAlign: 'left', color: '#000' }}>{item.NAME}</Text>
+                                                </Col>
+                                                <Col style={{ backgroundColor: '#D6D6D6', paddingVertical: 10 }}>
+                                                    <Text style={{ textAlign: 'center', color: '#000' }}>{item.QTY}</Text>
+                                                </Col>
+                                                <Col style={{ backgroundColor: '#B5B5B5', paddingVertical: 10 }}>
+                                                    <Text style={{ textAlign: 'center', color: '#000' }}>{item.PRICE}</Text>
+                                                </Col>
+                                            </Grid>
+                                        )
+                                    })
                             }
                         </ScrollView>
                     </View>

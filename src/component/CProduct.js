@@ -16,11 +16,9 @@ export default function CProduct({dataProduk, dataCart}) {
     const [dialogShow, setDialogShow] = useState(false)
 
     useEffect(() => {
-        console.log(dataCart)
     }, [])
 
     const btnAdd = (item) => {
-        console.log(item)
         dispatch(addToCart(item, item.id_produk))
         setDialogShow(true)
     }
