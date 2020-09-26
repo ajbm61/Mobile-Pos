@@ -32,6 +32,10 @@ export default function ListProduct() {
         });
     }
 
+    function myCallback() {
+        getProductFromDB()
+    }
+
     const getProductFromDB = () => {
         readQuery("SELECT * FROM product")
             .then(res => setListProduct(res.result))        
@@ -76,7 +80,7 @@ export default function ListProduct() {
                         {
                             listProduct.map((item, index) => {
                                 return (
-                                    <CProduct key={`key-${index}`} dataProduk={item} dataCart={cartState} />
+                                    <CProduct key={`key-${index}`} callbackFromParent={myCallback} dataProduk={item} dataCart={cartState} />
                                 )
                             })
                         }
@@ -103,7 +107,7 @@ export default function ListProduct() {
                                 </View>
                                 <View>
                                     <Text style={{ marginTop: 10, fontWeight: 'normal', textAlign: 'left', fontSize: 18 }}>Price</Text>
-                                    <TextInput onChangeText={(text) => setProductPrice(text)} style={{ borderWidth: 0.5, width: '100%', borderRadius: 5, paddingVertical: 5 }} />                                    
+                                    <TextInput keyboardType="number-pad" onChangeText={(text) => setProductPrice(text)} style={{ borderWidth: 0.5, width: '100%', borderRadius: 5, paddingVertical: 5 }} />                                    
                                 </View>
                                 <TouchableOpacity onPress={() => btnInsertProduct()} style={{ backgroundColor: '#43AB4A', marginTop: 10, borderRadius: 5}}>
                                     <Text style={{ marginVertical: 10, textAlign: 'center', fontWeight: 'bold', color: 'white' }}>Submit</Text>

@@ -8,7 +8,7 @@ import { addToCart } from '../redux/cartActions'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { updateProduct, removeProduct } from '../model/Product'
 
-export default function CProduct({dataProduk}) {
+export default function CProduct({dataProduk, callbackFromParent}) {
 
     const dispatch = useDispatch()
     const [dialogShow, setDialogShow] = useState(false)
@@ -23,7 +23,7 @@ export default function CProduct({dataProduk}) {
     }, [])
 
     const btnAdd = (item) => {
-        dispatch(addToCart(item, item.id_produk))
+        dispatch(addToCart(item, item.ID))
         setDialogShow(true)
     }
 
@@ -42,11 +42,11 @@ export default function CProduct({dataProduk}) {
 
     const btnRemoveProduct = () => {
         removeProduct(idProduct)
-            .then((res) => {
-                console.log(res)
-                if(res.result == true) {
-                    setEditDialogShow(false)
-                }
+        .then((res) => {
+            if(res.result == true) {
+                setEditDialogShow(false)
+            }
+            callbackFromParent()
             })
     }
 

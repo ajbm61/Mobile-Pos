@@ -12,17 +12,17 @@ export default function (state = initialState, action) {
             const { content } = action.payload
             console.log(action.id)
 
-            let addedItem = state.cartItem.find(item => item.id_produk === action.id)
-            let existed_item = state.cartItem.find(item => action.id === item.id_produk)
+            let addedItem = state.cartItem.find(item => item.ID === action.id)
+            let existed_item = state.cartItem.find(item => action.id === item.ID)
 
             if (existed_item) {
                 addedItem.quantity += 1
                 return {
                     ...state,
-                    total: state.total + parseInt(addedItem.harga)
+                    total: state.total + parseInt(addedItem.PRICE)
                 }
             } else {
-                let newTotal = state.total + parseInt(content.harga);
+                let newTotal = state.total + parseInt(content.PRICE);
                 content.quantity = 1;
                 return {
                     ...state,
@@ -35,9 +35,9 @@ export default function (state = initialState, action) {
         case ADD_QUANTITY: {
             const { content } = action.payload
             console.log(content)
-            let addedItem = state.cartItem.find(item => item.id_produk === action.id)
+            let addedItem = state.cartItem.find(item => item.ID === action.id)
             addedItem.quantity += 1
-            let newTotal = state.total + parseInt(content.harga);
+            let newTotal = state.total + parseInt(content.PRICE);
             return {
                 ...state,
                 total: newTotal
@@ -54,11 +54,11 @@ export default function (state = initialState, action) {
 
         case SUB_QUANTITY: {
             const { content } = action.payload
-            let addedItem = state.cartItem.find(item => item.id_produk === action.id)
+            let addedItem = state.cartItem.find(item => item.ID === action.id)
             //if the qt == 0 then it should be removed
             if (addedItem.quantity === 1) {
-                let new_items = state.cartItem.filter(item => item.id_produk !== action.id)
-                let newTotal = state.total - parseInt(content.harga);
+                let new_items = state.cartItem.filter(item => item.ID !== action.id)
+                let newTotal = state.total - parseInt(content.PRICE);
                 return {
                     ...state,
                     cartItem: new_items,
@@ -67,7 +67,7 @@ export default function (state = initialState, action) {
             }
             else {
                 addedItem.quantity -= 1
-                let newTotal = state.total - parseInt(content.harga);
+                let newTotal = state.total - parseInt(content.PRICE);
                 return {
                     ...state,
                     total: newTotal

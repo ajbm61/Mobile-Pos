@@ -36,10 +36,6 @@ export default function ListProduct() {
         await setTotal(globalState.cart.total)
     }
 
-    const fetchCart = () => {
-
-    }
-
     const showToast = () => {
         ToastAndroid.show("Data berhasil di refresh !", ToastAndroid.SHORT);
     };    
@@ -56,18 +52,18 @@ export default function ListProduct() {
     const cetakPrint = async () => {
 
         dataCart.map((item, index) => {
-            insertProductSold(item.nama, item.quantity, item.harga)
+            insertProductSold(item.NAME, item.quantity, item.PRICE)
         })
 
         await BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
             .then( async (s) => {
                 await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
                 await BluetoothEscposPrinter.printText("RAMEN BEWOK\n\r", {});
-                await BluetoothEscposPrinter.printText("Tanggal：" + getCurrentDate() + "\n\r", {});
+                await BluetoothEscposPrinter.printText("Tgl：" + getCurrentDate() + "\n\r", {});
                 await BluetoothEscposPrinter.printText("\n\r", {});
                 await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
                 dataCart.map(async (item, index) => {
-                    await BluetoothEscposPrinter.printText(item.nama + " x "+item.quantity+" : Rp. "+formatMoney(item.harga)+"\n\r", {});
+                    await BluetoothEscposPrinter.printText(item.NAME + " x "+item.quantity+" : Rp. "+formatMoney(item.PRICE)+"\n\r", {});
                 })
                 await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
                 await BluetoothEscposPrinter.printText("Total : Rp. " + formatMoney(total) + "\n\r", {});
@@ -125,15 +121,15 @@ export default function ListProduct() {
                         dataCart.length == 0 ? <View></View> : 
                             dataCart.map((item, index) => {
                                 return (
-                                    <Grid key={`product-${item.id_produk}`}>
+                                    <Grid key={`product-${item.ID}`}>
                                         <Col style={{ backgroundColor: 'white', paddingVertical: 10 }}>
-                                            <Text style={{ textAlign: 'center', color: 'black' }}>{item.nama}</Text>
+                                            <Text style={{ textAlign: 'center', color: 'black' }}>{item.NAME}</Text>
                                         </Col>
                                         <Col style={{ backgroundColor: 'white', paddingVertical: 10 }}>
                                             <Text style={{ textAlign: 'center', color: 'black' }}>{item.quantity}</Text>
                                         </Col>
                                         <Col style={{ backgroundColor: 'white', paddingVertical: 10 }}>
-                                            <Text style={{ textAlign: 'center', color: 'black' }}>{formatMoney(item.harga)}</Text>
+                                            <Text style={{ textAlign: 'center', color: 'black' }}>{formatMoney(item.PRICE)}</Text>
                                         </Col>
                                     </Grid>                                    
                                 )
