@@ -58,16 +58,17 @@ export default function ListProduct() {
         await BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
             .then( async (s) => {
                 await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
-                await BluetoothEscposPrinter.printText("RAMEN BEWOK\n\r", {});
+                await BluetoothEscposPrinter.printText("Ramen Bewok\n\r", {});
+                await BluetoothEscposPrinter.printText("Jln. Cikambuy No. 56\n\r", {});
                 await BluetoothEscposPrinter.printText("Tgl：" + getCurrentDate() + "\n\r", {});
                 await BluetoothEscposPrinter.printText("\n\r", {});
                 await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
                 dataCart.map(async (item, index) => {
                     await BluetoothEscposPrinter.printText(item.NAME + " x "+item.quantity+" : Rp. "+formatMoney(item.PRICE)+"\n\r", {});
                 })
-                await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
+                await BluetoothEscposPrinter.printText("\n\r\n\r", {});                
                 await BluetoothEscposPrinter.printText("Total : Rp. " + formatMoney(total) + "\n\r", {});
-                await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
+                await BluetoothEscposPrinter.printText("\n\r\n\r", {});                
                 await BluetoothEscposPrinter.printText("Terimakasih Telah Berbelanja.\n\r", {});
                 await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
             }, (e) => {

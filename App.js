@@ -22,7 +22,7 @@ const Stack = createStackNavigator();
 function LogoTitle() {
   return (
     <View>
-      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>RAMEN BEWOK</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Ramen Bewok</Text>
     </View>
   )
 }
