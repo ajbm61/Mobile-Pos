@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter } from 'react-native-bluetooth-escpos-printer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { createTableConfigBluetooth, updateBluetooth } from './model/Config'
 
 export default function MenuTop() {
 
@@ -27,6 +28,21 @@ export default function MenuTop() {
         });
     }    
 
+    const chooseBluetooth = (item) => {
+
+        createTableConfigBluetooth()
+
+        let data = {
+            name: item.name,
+            address: item.address
+        }
+
+        let myObjStr = JSON.stringify(data);
+
+        updateBluetooth(myObjStr)
+        
+    }
+
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
             <View style={{paddingHorizontal: 10, marginTop: 10}}>
@@ -34,7 +50,7 @@ export default function MenuTop() {
                 {
                     listPrinter.map((item, index) => {
                         return (
-                            <TouchableOpacity key={`printer-${index}`} style={{ backgroundColor: 'white', padding: 10 }}>
+                            <TouchableOpacity onPress={() => chooseBluetooth(item)} key={`printer-${index}`} style={{ backgroundColor: 'white', padding: 10 }}>
                                 <Text>{item.name}</Text>
                                 <Text>{item.address}</Text>
                             </TouchableOpacity>

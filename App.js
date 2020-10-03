@@ -11,6 +11,7 @@ import Sale from './src/Sale'
 import Report from './src/Report'
 import MenuTop from './src/component/MenuTop'
 import SearchBluetooth from './src/SearchBluetooth'
+import Config from './src/Config'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -73,6 +74,12 @@ export default function App(props) {
               }}
               name="SearchBluetooth" 
               component={SearchBluetooth} />
+            <Stack.Screen 
+              options={{
+                title: 'Config'
+              }}
+              name="Config" 
+              component={Config} />
           </Stack.Navigator>          
         </NavigationContainer>
       </Provider>        

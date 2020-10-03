@@ -26,6 +26,11 @@ export default function MenuTop() {
         hideMenu()
         navigation.navigate('SearchBluetooth')
     }
+
+    const toConfig = () => {
+        hideMenu()
+        navigation.navigate('Config')
+    }
         
     return (
         <View style={{ paddingHorizontal: 10, paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -39,7 +44,7 @@ export default function MenuTop() {
                 }
             >
                 <MenuItem onPress={() => toBluetoothPage()}>Search Bluetooth</MenuItem>
-                <MenuItem onPress={hideMenu}>Config</MenuItem>
+                <MenuItem onPress={() => toConfig()}>Config</MenuItem>
                 <MenuDivider />
                 <MenuItem onPress={hideMenu}>About</MenuItem>
             </Menu>

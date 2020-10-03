@@ -14,6 +14,7 @@ export default function Report() {
     const [dateFrom, setDateFrom] = useState('')
     const [dateTo, setDateTo] = useState('')
     const [total, setTotal] = useState(0)
+    const [showTotal, setShowTotal] = useState(false)
 
     useEffect(() => {
 
@@ -25,19 +26,15 @@ export default function Report() {
             query = `SELECT * FROM product_sold WHERE TIMESTAMP BETWEEN '${dateFrom}' AND datetime('${dateFrom}','+1 day')`
         }
         readQuery(query)
-            .then(res => setDataReport(res.result))
-
-        getTotalPrice()
+            .then((res) => {
+                var numTotal = 0
+                res.result.map((item, index) => {
+                    numTotal += parseInt(item.PRICE)
+                })
+                setTotal(numTotal)
+                setDataReport(res.result)                
+            })
     }
-
-    const getTotalPrice = () => {
-        var numTotal = 0
-        dataReport.map((item, index) => {
-            numTotal += parseInt(item.PRICE)
-        })
-        setTotal(numTotal)
-    }
-
 
     return (
         <>
