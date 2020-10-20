@@ -21,8 +21,14 @@ export default function ListProduct() {
     const [dataCart, setDataCart] = useState([])
     const [total, setTotal] = useState([])
     const cart = globalState.cart.cartItem;
+    const isFocused = useIsFocused()
 
     var db = openDatabase({ name: 'UserDatabase.db' });
+
+    useEffect(() => {
+        setDataCart(cart)
+        setTotal(globalState.cart.total)
+    }, [isFocused]);
 
     const wait = (timeout) => {
         return new Promise(resolve => {

@@ -29,8 +29,9 @@ export default function Report() {
             .then((res) => {
                 var numTotal = 0
                 res.result.map((item, index) => {
-                    numTotal += parseInt(item.PRICE)
+                    numTotal += parseInt(item.PRICE) * parseInt(item.QTY)
                 })
+                console.log(numTotal)
                 setTotal(numTotal)
                 setDataReport(res.result)                
             })

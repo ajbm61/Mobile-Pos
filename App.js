@@ -14,6 +14,7 @@ import SearchBluetooth from './src/SearchBluetooth'
 import Config from './src/Config'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import About from './src/About';
 
 const { store } = configureStore();
 
@@ -23,7 +24,7 @@ const Stack = createStackNavigator();
 function LogoTitle() {
   return (
     <View>
-      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Ramen Bewok</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Mobile Simple POS</Text>
     </View>
   )
 }
@@ -80,6 +81,12 @@ export default function App(props) {
               }}
               name="Config" 
               component={Config} />
+            <Stack.Screen 
+              options={{
+                title: 'About'
+              }}
+              name="About" 
+              component={About} />
           </Stack.Navigator>          
         </NavigationContainer>
       </Provider>        

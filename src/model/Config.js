@@ -45,6 +45,16 @@ export function updateConfig(item) {
     })
 }
 
+export const readConfig = () => {
+    return new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql("SELECT * FROM config_toko WHERE ID=?", [1], (tx, results) => {
+                resolve({ result: results.rows.item(0) });
+            })
+        })
+    })
+}
+
 export function createTableConfigBluetooth() {
     return new Promise((reslove, reject) => {
         db.transaction((txn) => {

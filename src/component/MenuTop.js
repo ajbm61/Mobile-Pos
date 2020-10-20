@@ -27,6 +27,11 @@ export default function MenuTop() {
         navigation.navigate('SearchBluetooth')
     }
 
+    const toAboutPage = () => {
+        hideMenu()
+        navigation.navigate('About')
+    }
+
     const toConfig = () => {
         hideMenu()
         navigation.navigate('Config')
@@ -46,7 +51,7 @@ export default function MenuTop() {
                 <MenuItem onPress={() => toBluetoothPage()}>Search Bluetooth</MenuItem>
                 <MenuItem onPress={() => toConfig()}>Config</MenuItem>
                 <MenuDivider />
-                <MenuItem onPress={hideMenu}>About</MenuItem>
+                <MenuItem onPress={() => toAboutPage()}>About</MenuItem>
             </Menu>
         </View>           
     )
