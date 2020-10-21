@@ -15,6 +15,7 @@ import Config from './src/Config'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import About from './src/About';
+import TestView from './src/TestView';
 
 const { store } = configureStore();
 

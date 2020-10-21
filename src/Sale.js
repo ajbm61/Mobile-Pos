@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { TouchableOpacity, View, Text, ScrollView, RefreshControl, ToastAndroid } from 'react-native';
+import { TouchableOpacity, View, Text, ScrollView, RefreshControl, ToastAndroid, Alert } from 'react-native';
 import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter } from 'react-native-bluetooth-escpos-printer';
 import { formatMoney } from './lib/currency'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { openDatabase } from 'react-native-sqlite-storage';
 import { insertProductSold } from './model/Product'
+import { readConfig } from './model/Config'
 
 export default function ListProduct() {
 
@@ -20,6 +21,7 @@ export default function ListProduct() {
     const [cartState, setCartState] = useState([])
     const [dataCart, setDataCart] = useState([])
     const [total, setTotal] = useState([])
+    const [selectedPrinter, setSelectedPrinter] = useState([])
     const cart = globalState.cart.cartItem;
     const isFocused = useIsFocused()
 
@@ -27,7 +29,7 @@ export default function ListProduct() {
 
     useEffect(() => {
         setDataCart(cart)
-        setTotal(globalState.cart.total)
+        setTotal(globalState.cart.total)      
     }, [isFocused]);
 
     const wait = (timeout) => {
@@ -61,25 +63,41 @@ export default function ListProduct() {
             insertProductSold(item.NAME, item.quantity, item.PRICE)
         })
 
-        await BluetoothManager.connect('66:22:B2:87:49:91') // the device address scanned.
-            .then( async (s) => {
-                await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
-                await BluetoothEscposPrinter.printText("Ramen Bewok\n\r", {});
-                await BluetoothEscposPrinter.printText("Jln. Cikambuy No. 56\n\r", {});
-                await BluetoothEscposPrinter.printText("Tgl：" + getCurrentDate() + "\n\r", {});
-                await BluetoothEscposPrinter.printText("\n\r", {});
-                await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
-                dataCart.map(async (item, index) => {
-                    await BluetoothEscposPrinter.printText(item.NAME + " x "+item.quantity+" : Rp. "+formatMoney(item.PRICE)+"\n\r", {});
-                })
-                await BluetoothEscposPrinter.printText("\n\r\n\r", {});                
-                await BluetoothEscposPrinter.printText("Total : Rp. " + formatMoney(total) + "\n\r", {});
-                await BluetoothEscposPrinter.printText("\n\r\n\r", {});                
-                await BluetoothEscposPrinter.printText("Terimakasih Telah Berbelanja.\n\r", {});
-                await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});                
-            }, (e) => {
-                console.log(e)
-            })
+        let bluNameResponse = await readConfig(2)
+        let bluName = JSON.parse(bluNameResponse.result.CONTENT)
+
+        let resToko = await readConfig(1)
+        let tokoDetail = JSON.parse(resToko.result.CONTENT)
+
+        try {
+            await BluetoothManager.connect(bluName.address) // the device address scanned.
+                .then(async (s) => {
+                    await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.CENTER);
+                    await BluetoothEscposPrinter.printText(`${tokoDetail.namaToko}\n\r`, {});
+                    await BluetoothEscposPrinter.printText(`${tokoDetail.alamatToko}\n\r`, {});
+                    await BluetoothEscposPrinter.printText("Tgl：" + getCurrentDate() + "\n\r", {});
+                    await BluetoothEscposPrinter.printText("\n\r", {});
+                    await BluetoothEscposPrinter.printerAlign(BluetoothEscposPrinter.ALIGN.LEFT);
+                    dataCart.map(async (item, index) => {
+                        await BluetoothEscposPrinter.printText(item.NAME + " x " + item.quantity + " : Rp. " + formatMoney(item.PRICE) + "\n\r", {});
+                    })
+                    await BluetoothEscposPrinter.printText("\n\r\n\r", {});
+                    await BluetoothEscposPrinter.printText("Total : Rp. " + formatMoney(total) + "\n\r", {});
+                    await BluetoothEscposPrinter.printText("\n\r\n\r", {});
+                    await BluetoothEscposPrinter.printText(`${tokoDetail.deskripsiToko}\n\r`, {});
+                    await BluetoothEscposPrinter.printText("\n\r\n\r\n\r", {});
+                })            
+        } catch (error) {
+            Alert.alert(
+                'Info', 
+                'Konfigurasi Toko atau Bluetooth belum di setting dan pastikan Perangkat Printer Kasir anda menyala',
+                [
+                    { text: 'Setting Toko', onPress: () => navigation.navigate('Config') },
+                    { text: 'Setting Bluetooth', onPress: () => navigation.navigate('SearchBluetooth') }
+                ],                
+            )
+            return false
+        }
             
         await dispatch(emptyCart())
         await checkOutPage()
@@ -97,6 +115,13 @@ export default function ListProduct() {
         },
         [],
     )
+
+    const emptyPage = () => {
+        dispatch(emptyCart())
+        setDataCart(cart)
+        setTotal(globalState.cart.total)    
+        wait(500).then(() => showToast());
+    }
 
     return (
         <>
@@ -147,10 +172,10 @@ export default function ListProduct() {
             </ScrollView>
             <View style={{ backgroundColor: 'white', paddingVertical: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
                 <TouchableOpacity
-                    onPress={() => checkOutPage()}
+                    onPress={() => emptyPage()}
                     style={{ backgroundColor: '#E74145', width: '45%', marginHorizontal: 10, paddingVertical: 10, borderRadius: 5, flexDirection: 'row', justifyContent: 'center' }}>
                     <Ionicons name="search-circle-outline" size={20} color="#FFF" style={{}} />
-                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Check</Text>
+                    <Text style={{ color: 'white', fontWeight: 'bold', marginLeft: 8, fontSize: 16 }}>Refresh</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => cetakPrint()}

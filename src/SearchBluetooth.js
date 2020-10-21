@@ -1,12 +1,22 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, TouchableOpacity } from 'react-native';
 import { BluetoothManager, BluetoothEscposPrinter, BluetoothTscPrinter } from 'react-native-bluetooth-escpos-printer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createTableConfigBluetooth, updateBluetooth } from './model/Config'
+import { createTableConfigBluetooth, updateBluetooth, readConfig } from './model/Config'
 
 export default function MenuTop() {
 
     const [listPrinter, setListPrinter] = useState([])
+    const [selectedPrinter, setSelectedPrinter] = useState([])
+
+    useEffect(() => {
+        readConfig(2)
+            .then((res) => {
+                let item = JSON.parse(res.result.CONTENT)
+                setSelectedPrinter(item)
+                console.log(item)
+            })
+    }, [])    
 
     const searchPrinter = async () => {
         await BluetoothManager.enableBluetooth().then((r) => {
@@ -21,12 +31,10 @@ export default function MenuTop() {
                 }
             }
             setListPrinter(paired)
-            console.log(paired)
-            console.log(JSON.stringify(paired))
         }, (err) => {
             console.log(err)
         });
-    }    
+    }
 
     const chooseBluetooth = (item) => {
 
@@ -45,19 +53,36 @@ export default function MenuTop() {
 
     return (
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
-            <View style={{paddingHorizontal: 10, marginTop: 10}}>
-                {/* Looping */}
+            <View>
+                <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                    <Text>Selected Device</Text>
+                </View>            
+                <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                    <TouchableOpacity style={{ backgroundColor: '#43AB4A', padding: 10 }}>
+                        <Text>{selectedPrinter.name}</Text>
+                        <Text>{selectedPrinter.address}</Text>
+                    </TouchableOpacity>
+                </View>
                 {
-                    listPrinter.map((item, index) => {
-                        return (
-                            <TouchableOpacity onPress={() => chooseBluetooth(item)} key={`printer-${index}`} style={{ backgroundColor: 'white', padding: 10 }}>
-                                <Text>{item.name}</Text>
-                                <Text>{item.address}</Text>
-                            </TouchableOpacity>
-                        )
-                    })
+                    (listPrinter.length > 0) &&
+                        <View style={{ paddingHorizontal: 10, marginTop: 20 }}>
+                            <Text>Available Devices</Text>
+                        </View>
                 }
-                {/* Looping */}
+                <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
+                    {/* Looping */}
+                    {
+                        listPrinter.map((item, index) => {
+                            return (
+                                <TouchableOpacity onPress={() => chooseBluetooth(item)} key={`printer-${index}`} style={{ backgroundColor: 'white', padding: 10 }}>
+                                    <Text>{item.name}</Text>
+                                    <Text>{item.address}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                    {/* Looping */}
+                </View>                
             </View>
             <View>
                 <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>

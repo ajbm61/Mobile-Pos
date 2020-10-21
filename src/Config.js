@@ -11,7 +11,7 @@ export default function Config() {
     const [deskripsi, setDeskripsi] = useState('')
     
     useEffect(() => {        
-        readConfig()
+        readConfig(1)
             .then((res) => {
                 let item = JSON.parse(res.result.CONTENT)
                 setNamaToko(item.namaToko)
@@ -37,9 +37,13 @@ export default function Config() {
     }
 
     return (
-        <KeyboardAwareScrollView>
-            <View style={{ flex: 1 }}>
-                <View style={{ paddingHorizontal: 10, marginTop: 10, backgroundColor: 'pink' }}>
+        <KeyboardAwareScrollView contentContainerStyle={{ flexGrow: 1 }}>
+            <View style={{
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                flex: 1
+            }}>
+                <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
                     <View>
                         <Text style={{fontSize: 18, marginBottom: 5}}>Nama Toko/Usaha</Text>
                         <TextInput value={namaToko} onChangeText={(text) => setNamaToko(text)} style={{backgroundColor: '#FFF', borderWidth: StyleSheet.hairlineWidth}} />
@@ -56,7 +60,7 @@ export default function Config() {
                         <Text style={{fontSize: 14}}>Data diatas akan ditampilan di setiap kali mencetak struk.</Text>
                     </View>
                 </View>
-                <View style={{backgroundColor: 'blue', flex: 1, justifyContent: 'flex-end'}}>
+                <View style={{backgroundColor: 'blue'}}>
                     <View style={{ backgroundColor: 'white', paddingVertical: 10 }}>
                         <TouchableOpacity
                             onPress={() => saveConfig()}

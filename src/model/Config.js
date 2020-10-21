@@ -45,10 +45,10 @@ export function updateConfig(item) {
     })
 }
 
-export const readConfig = () => {
+export const readConfig = (id) => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
-            tx.executeSql("SELECT * FROM config_toko WHERE ID=?", [1], (tx, results) => {
+            tx.executeSql("SELECT * FROM config_toko WHERE ID=?", [id], (tx, results) => {
                 resolve({ result: results.rows.item(0) });
             })
         })
