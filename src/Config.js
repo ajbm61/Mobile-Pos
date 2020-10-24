@@ -46,15 +46,15 @@ export default function Config() {
                 <View style={{ paddingHorizontal: 10, marginTop: 10 }}>
                     <View>
                         <Text style={{fontSize: 18, marginBottom: 5}}>Nama Toko/Usaha</Text>
-                        <TextInput value={namaToko} onChangeText={(text) => setNamaToko(text)} style={{backgroundColor: '#FFF', borderWidth: StyleSheet.hairlineWidth}} />
+                        <TextInput value={namaToko} onChangeText={(text) => setNamaToko(text)} style={{backgroundColor: '#FFF', paddingHorizontal: 10, borderWidth: StyleSheet.hairlineWidth}} />
                     </View>
                     <View>
                         <Text style={{fontSize: 18, marginBottom: 5}}>Alamat Toko/Usaha</Text>
-                        <TextInput value={alamat} onChangeText={(text) => setAlamat(text)} style={{backgroundColor: '#FFF', borderWidth: StyleSheet.hairlineWidth}} />
+                        <TextInput value={alamat} onChangeText={(text) => setAlamat(text)} style={{ backgroundColor: '#FFF', paddingHorizontal: 10, borderWidth: StyleSheet.hairlineWidth}} />
                     </View>
                     <View style={{marginTop: 20}}>
                         <Text style={{fontSize: 18, marginBottom: 5}}>Deskripsi di Akhir Struk Pembelian</Text>
-                        <TextInput value={deskripsi} onChangeText={(text) => setDeskripsi(text)} multiline style={{ backgroundColor: '#FFF', height: 100, textAlignVertical: 'top', borderWidth: StyleSheet.hairlineWidth}} />
+                        <TextInput value={deskripsi} onChangeText={(text) => setDeskripsi(text)} multiline style={{ backgroundColor: '#FFF', paddingHorizontal: 10, height: 100, textAlignVertical: 'top', borderWidth: StyleSheet.hairlineWidth}} />
                     </View>
                     <View style={{backgroundColor: '#F0ECD2', padding: 10}}>
                         <Text style={{fontSize: 14}}>Data diatas akan ditampilan di setiap kali mencetak struk.</Text>

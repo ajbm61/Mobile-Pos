@@ -16,6 +16,13 @@ import Config from './src/Config'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import About from './src/About';
 import TestView from './src/TestView';
+import HowToConnect from './src/HowToConnect';
+
+/* Ad Mob */
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
+
+// const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5527438852236897/4889867041';
+const adUnitId = TestIds.BANNER;
 
 const { store } = configureStore();
 
@@ -25,7 +32,21 @@ const Stack = createStackNavigator();
 function LogoTitle() {
   return (
     <View>
-      <Text style={{ fontWeight: 'bold', fontSize: 18 }}>Mobile Simple POS</Text>
+      <Text style={{ fontWeight: '400', fontSize: 18 }}>Mobile Simple POS</Text>
+    </View>
+  )
+}
+
+function BannerAds() {
+  return (
+    <View style={{ backgroundColor: 'white' }}>
+      <BannerAd
+        unitId={adUnitId}
+        size={BannerAdSize.SMART_BANNER}
+        requestOptions={{
+          requestNonPersonalizedAdsOnly: true,
+        }}
+      />
     </View>
   )
 }
@@ -88,8 +109,15 @@ export default function App(props) {
               }}
               name="About" 
               component={About} />
+            <Stack.Screen 
+              options={{
+                title: 'Connect Printer'
+              }}
+              name="HowToConnect" 
+              component={HowToConnect} />
           </Stack.Navigator>          
         </NavigationContainer>
+        <BannerAds />
       </Provider>        
     );
 }

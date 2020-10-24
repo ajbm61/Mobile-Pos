@@ -29,7 +29,7 @@ export default function ListProduct() {
 
     useEffect(() => {
         setDataCart(cart)
-        setTotal(globalState.cart.total)      
+        setTotal(globalState.cart.total)
     }, [isFocused]);
 
     const wait = (timeout) => {

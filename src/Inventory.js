@@ -50,14 +50,14 @@ export default function ListProduct() {
     }
 
     const showToast = () => {
-        ToastAndroid.show("Data berhasil di refresh !", ToastAndroid.SHORT);
+        ToastAndroid.show("Refresh Successfully !", ToastAndroid.SHORT);
     };    
 
     const onRefresh = useCallback(
         () => {
             setRefreshing(true);
             dispatch(emptyCart())
-            console.log('halaman di refresh')
+            console.log('Refresh Successfully')
             wait(500).then(() => setRefreshing(false));
             getProductFromDB()
             showToast()
@@ -67,12 +67,15 @@ export default function ListProduct() {
 
     return (
         <>
-            <ScrollView refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }>
-                <View style={{ backgroundColor: 'white', flex: 1 }}>
+            <ScrollView
+                style={{ backgroundColor: 'white' }} 
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
+            >
+                <View>
                     <View style={{ paddingBottom: 20 }}>
-                        <TouchableOpacity onPress={() => setDialogShow(true)} style={{ backgroundColor: '#01B6AD', paddingHorizontal: 20, paddingVertical: 10}}>
+                        <TouchableOpacity onPress={() => setDialogShow(true)} style={{ backgroundColor: '#3B99FB', paddingHorizontal: 20, paddingVertical: 15 }}>
                             <Text style={{color: 'white', textAlign: 'center', fontSize: 18}}>Add Product</Text>
                         </TouchableOpacity>
                         <View style={{paddingHorizontal: 20}}>
@@ -88,6 +91,7 @@ export default function ListProduct() {
                         </View>
                     </View>
                     <Dialog
+                        rounded={false}
                         visible={dialogShow}
                         onTouchOutside={() => {
                             setDialogShow(false)
@@ -99,22 +103,22 @@ export default function ListProduct() {
                         <DialogContent>
                             <View style={{ width: 250, paddingVertical: 10 }}>
                                 <View>
-                                    <Text style={{textAlign: 'center', fontSize: 21}}>Add Product</Text>
+                                    <Text style={{textAlign: 'center', fontSize: 21, fontWeight: 'bold'}}>Add Product</Text>
                                 </View>
                                 <View>
                                     <Text style={{ marginTop: 20, fontWeight: 'normal', textAlign: 'left', fontSize: 18 }}>Product Name</Text>
-                                    <TextInput onChangeText={(text) => setProductName(text)} style={{ borderWidth: 0.5, width: '100%', borderRadius: 5, paddingVertical: 5 }} />
+                                    <TextInput onChangeText={(text) => setProductName(text)} style={{ borderWidth: 0.5, width: '100%', paddingVertical: 5 }} />
                                 </View>
                                 <View>
                                     <Text style={{ marginTop: 10, fontWeight: 'normal', textAlign: 'left', fontSize: 18 }}>Price</Text>
-                                    <TextInput keyboardType="number-pad" onChangeText={(text) => setProductPrice(text)} style={{ borderWidth: 0.5, width: '100%', borderRadius: 5, paddingVertical: 5 }} />                                    
+                                    <TextInput keyboardType="number-pad" onChangeText={(text) => setProductPrice(text)} style={{ borderWidth: 0.5, width: '100%', paddingVertical: 5 }} />                                    
                                 </View>
-                                <TouchableOpacity onPress={() => btnInsertProduct()} style={{ backgroundColor: '#43AB4A', marginTop: 10, borderRadius: 5}}>
+                                <TouchableOpacity onPress={() => btnInsertProduct()} style={{ backgroundColor: '#43AB4A', marginTop: 10 }}>
                                     <Text style={{ marginVertical: 10, textAlign: 'center', fontWeight: 'bold', color: 'white' }}>Submit</Text>
                                 </TouchableOpacity>
                             </View>
                         </DialogContent>
-                    </Dialog>                     
+                    </Dialog>
                 </View>
             </ScrollView>             
         </>

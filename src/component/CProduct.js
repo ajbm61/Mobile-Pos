@@ -66,12 +66,12 @@ export default function CProduct({dataProduk, callbackFromParent}) {
     return (
         <View>
             <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1, borderWidth: StyleSheet.hairlineWidth }}>
+                <View style={{ flexDirection: "row", justifyContent: 'space-between', flex: 1, borderWidth: 2 }}>
                     <TouchableOpacity onPress={() => popUpEditShow(itemProduct)} style={{ width: '68%', paddingVertical: 10, paddingLeft: 20 }}>
                         <Text style={{ fontWeight: "bold", fontSize: 15, color: '#303030' }}>{itemProduct.NAME}</Text>
                         <Text style={{ fontSize: 15, color: '#000' }}>Rp. {formatMoney(itemProduct.PRICE)}</Text>               
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => btnAdd(itemProduct)} style={{ width: 100, backgroundColor: '#01B6AD', flexDirection: 'row', justifyContent: 'center' }}>
+                    <TouchableOpacity onPress={() => btnAdd(itemProduct)} style={{ width: 100, backgroundColor: '#3B99FB', flexDirection: 'row', justifyContent: 'center' }}>
                         <View style={{justifyContent: 'center'}}>
                             <Ionicons name="add-outline" size={30} color="#FFF" style={styles.btnAdd} />
                         </View>                             

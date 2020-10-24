@@ -48,6 +48,7 @@ export default function MenuTop() {
         let myObjStr = JSON.stringify(data);
 
         updateBluetooth(myObjStr)
+        setSelectedPrinter(data)
         
     }
 

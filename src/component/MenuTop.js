@@ -48,9 +48,13 @@ export default function MenuTop() {
                     </TouchableOpacity>
                 }
             >
-                <MenuItem onPress={() => toBluetoothPage()}>Search Bluetooth</MenuItem>
+                <MenuItem onPress={() => toBluetoothPage()}>Search Printer</MenuItem>
                 <MenuItem onPress={() => toConfig()}>Config</MenuItem>
                 <MenuDivider />
+                <MenuItem onPress={() => {
+                    hideMenu()
+                    navigation.navigate('HowToConnect')
+                }}>How To Connect Printer</MenuItem>
                 <MenuItem onPress={() => toAboutPage()}>About</MenuItem>
             </Menu>
         </View>           
