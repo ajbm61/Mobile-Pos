@@ -1,4 +1,4 @@
-package com.mobilepos;
+package com.hitamcoklat.mobilepos;
 
 import com.facebook.react.ReactActivity;
 

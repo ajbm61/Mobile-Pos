@@ -21,8 +21,8 @@ import HowToConnect from './src/HowToConnect';
 /* Ad Mob */
 import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 
-// const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5527438852236897/4889867041';
-const adUnitId = TestIds.BANNER;
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5527438852236897/4889867041';
+// const adUnitId = TestIds.BANNER;
 
 const { store } = configureStore();
 

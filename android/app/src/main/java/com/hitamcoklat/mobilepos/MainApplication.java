@@ -1,4 +1,4 @@
-package com.mobilepos;
+package com.hitamcoklat.mobilepos;
 
 import android.app.Application;
 import android.content.Context;

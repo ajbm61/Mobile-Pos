@@ -37,9 +37,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:760582243005:android:2c32066a304043e1acedd4",
+        "mobilesdk_app_id": "1:760582243005:android:4d1c733f35481aa7acedd4",
         "android_client_info": {
-          "package_name": "com.mobilepos"
+          "package_name": "com.hitamcoklat.mobilepos"
         }
       },
       "oauth_client": [
